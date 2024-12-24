@@ -3,6 +3,8 @@ from datetime import datetime
 
 from seiscore.binaryfile.binaryfile import BinaryFile
 
+def is_file(file_path):
+    return os.path.isfile(file_path)
 
 def semblance_value(signals: list):
     numerator = 0
