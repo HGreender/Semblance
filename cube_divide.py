@@ -1,5 +1,3 @@
-import json
-
 import numpy as np
 from datetime import datetime
 
@@ -23,7 +21,7 @@ search_area = SearchArea(
 
 # Разбиение области поиска на массив координат угла кубиков
 cubes = search_area.cubes_coordinate_to_list()
-cubes = [[9638713.53, 5848147.6,-867.13]]
+
 # Загрузка Сигналов
 bin_directory_path = 'Drafts/Data/semblance 1803 TDsh/bin/'
 
@@ -43,8 +41,12 @@ stations = np.loadtxt(
 stations = [[int(row[0]), *row[1:]] for row in stations]
 
 # Удаляем станции, на которых нет сигнала и добавляем сигнал туда, где он есть
-start_day_time = datetime(2022, 8, 14, 15, 25, 4)
-stop_day_time = datetime(2022, 8, 14, 15, 25, 7)
+start_day_time = datetime(
+    2022, 8, 14, 15, 25, 4
+)
+stop_day_time = datetime(
+    2022, 8, 14, 15, 25, 6
+)
 for station in stations[:]:
     if station[0] not in bin_files_names_list:
         stations.remove(station)
@@ -57,9 +59,6 @@ for station in stations[:]:
             stop=stop_day_time
         ).tolist()
         station.append(signal)
-
-# Каждой станции присваиваем свой сигнал
-station_signals_dict = dict()
 
 # Загрузка сейсмической vsp-модели
 ## VSP: h_vert, h_abs, V
@@ -103,17 +102,17 @@ for cube_number, stations_delays in cube_delays.items():
     for station_ in stations_delays.keys():
         stations_delays[station_] =  int(
             round(
-                (stations_delays[station_] - min_station_dict[cube_number]) * 1000, 0
+                (stations_delays[station_] - min_station_dict[cube_number]) \
+                * 1000,
+                0
             )
         )
 
-print()
-
 # Вычисление сЕмБаЛаНсА
-print('Cubes in %:')
+print('\nCubes in %:')
 semblance_window = 40
 semblance_values = list()
-for start_discrete in range(350, 2000, 40):
+for start_discrete in range(0, 1000, semblance_window):
     for cube_index in range(len(cubes)):
         cube_x, cube_y, cube_z = cubes[cube_index]
         cube_station_delays = cube_delays[f'Cube_{cube_index}']
@@ -139,7 +138,3 @@ with open('/home/sigma-st-4/Рабочий стол/Semblance/Semblance/sembalan
 
 print(cube_delays)
 print()
-
-
-# with open('Drafts/Data/Saved_cube_delays.json', 'w', encoding='utf-8') as file:
-#     json.dump(cube_delays, file, ensure_ascii=False, indent=4)
