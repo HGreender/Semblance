@@ -12,7 +12,7 @@ def semblance_value(signals: list):
         for column in range(len(signals)):
             sum_of_values += signals[column][row]
             denominator += signals[column][row] ** 2
-        numerator = sum_of_values ** 2
+        numerator += sum_of_values ** 2
 
     return numerator / denominator
 
