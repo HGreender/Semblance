@@ -1,0 +1,2 @@
+Point	MD	x	y	Depth	Altitude	name
+TDSh_seredina	1062	9638773.51	5848147.68	1062.0	-867.13	1
